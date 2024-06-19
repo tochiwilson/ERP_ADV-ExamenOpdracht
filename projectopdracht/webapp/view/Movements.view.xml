@@ -1,7 +1,158 @@
 <mvc:View controllerName="projectopdracht.controller.Movements"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
-        <content />
-    </Page>
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <SplitApp class="SplitApp" id="SplitApp">
+        <masterPages>
+            <Page id="masterPage" title="Movements">
+                <content>
+                    <VBox>
+                        <VBox class="typeFilter"> 
+                            <Select id="typeSelect">
+                                <items>
+                                    <core:Item key="all" text="All Types" />
+                                    <core:Item key="IN" text="IN" />
+                                    <core:Item key="OUT" text="OUT" />
+                                    <core:Item key="I/O" text="I/O" />
+                                </items>
+                            </Select>                    
+                        </VBox>
+                        <VBox class="dateFilter">
+                            <Label text="Start Date"/>
+                            <DatePicker id="startDatePicker" width="50%" valueFormat="yyyy-MM-dd" displayFormat="long"/>
+                            
+                            <Label text="End Date" class="sapUiSmallMarginTop"/>
+                            <DatePicker id="endDatePicker" width="50%" valueFormat="yyyy-MM-dd" displayFormat="long"/>
+                        </VBox>
+                        <Button text="Search" type="Emphasized" press="applyFilters" class="searchButton"/>
+
+                        <List id="entryList" mode="SingleSelectMaster" items="{/MovementSet}" selectionChange="onSelectionChange" class="movementList">
+                            <StandardListItem
+                                title="{Id}"
+                                description="{Type}"
+                                info="{Location}" />
+                        </List>
+                    </VBox>
+                </content>
+                <Button icon="sap-icon://add" press="onOpenCreateDialog" class="floatingButton"/>
+            </Page>
+        </masterPages>
+        <detailPages>
+            <Page id="detailPage" title="Details">
+                <content>
+                    <VBox>
+                        <Text id="noDataText" text="No Movement Selected" visible="true" class="noDataText"/>                    
+                        <VBox id="detailContent" visible="false">
+                            <VBox class="TitleBox">
+                            <HBox class="TitleAndButton"> 
+                                <Text id="detailId" text="ID: {Id}" class="title"/>
+                                <Button
+											id="deleteUserButton"
+											icon="sap-icon://delete"
+											tooltip="{i18n>deleteButtonText}"
+											press="onDeleteEntry">
+											<layoutData>
+												<OverflowToolbarLayoutData priority="NeverOverflow"/>
+											</layoutData>
+							    </Button>
+                            </HBox>
+                                <Text id="detailLocation" text="Location: {Location}"/>
+                                <Text id="detailFinished" text="{= ${Finished} ? 'Finished' : 'Not Finished'}"/>
+                            </VBox>
+                            <VBox class="BodyBox">
+                                <Text id="detailType" text="Type: {Type}"/>
+                                <Text id="detailMovDate" text="Date: {path: 'MovDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'dd-MM-yyyy'}}" />
+                                <Text id="detailPartner" text="Partner: {Partner}"/>
+                                <Text id="detailChanges" text="Last changed by {ChgUser} on {path: 'ChgDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'dd-MM-yyyy'}}" class="detailChanges"/>
+                            </VBox>      
+                            <VBox class="ItemsBox">
+                                <Text class="itemsTitle" text="Items: "/>
+                                <List id="itemsListDetail" items="{Items}">
+                                    <StandardListItem title="{Matnr}" info="{Umziz} {Meins}"/>
+                                </List>
+                            </VBox>                   
+                        </VBox>
+                    </VBox>
+                </content>
+            </Page>
+        </detailPages>
+    </SplitApp>
+    
+    <Dialog id="createMovementDialog" title="Create New Movement" class="createMovementDialog">
+        <content>
+            <VBox class="contentClass">
+                <Label text="Location"/>
+                <Select id="locationSelect">
+                    <items>
+                        <core:Item key="NOORD" text="NOORD"/>
+                        <core:Item key="LICHT" text="LICHT"/>
+                        <core:Item key="ELLER" text="ELLER"/>
+                        <core:Item key="VIADU" text="VIADU"/>
+                    </items>
+                </Select>
+
+                <Label text="Type"/>
+                <Select id="typeSelectDialog">
+                    <items>
+                        <core:Item key="IN" text="IN"/>
+                        <core:Item key="OUT" text="OUT"/>
+                        <core:Item key="I/O" text="I/O"/>
+                    </items>
+                </Select>
+
+                <Label text="Date" />
+                <DatePicker id="datePicker" width="100%" valueFormat="yyyy-MM-dd" displayFormat="long"/>
+
+                <Label text="Partner"/>
+                <Input id="partnerInput" width="100%"/>
+
+                <Label text="Items"/>
+                <List id="itemsList" items="{itemsModel>/items}">
+                    <StandardListItem title="{itemsModel>Matnr}" description="{itemsModel>Umziz} {itemsModel>Meins}" />
+                </List>
+
+                <Button text="Add Item" press="onOpenAddItemDialog"/>
+
+            </VBox>
+        </content>
+        <beginButton>
+            <Button text="Cancel" press="onCloseCreateDialog"/>
+        </beginButton>
+        <endButton>
+            <Button text="Save Movement" press="onSaveNewMovement"/>
+        </endButton>
+    </Dialog>
+
+    <Dialog id="addItemDialog" title="Add Item">
+        <content>
+            <VBox class="contentClass">
+                <Label text="Material Number"/>
+                <Input id="materialNumberInput" width="100%"/>
+                <Label text="Quantity"/>
+                <Input id="quantityInput" width="100%"/>
+                <Label text="Unit of Measurement"/>
+                <Input id="unitInput" width="100%"/>
+            </VBox>
+        </content>
+        <beginButton>
+            <Button text="Cancel" press="onCloseAddItemDialog"/>
+        </beginButton>
+        <endButton>
+            <Button text="Add" press="onAddItem"/>
+        </endButton>
+    </Dialog>
+
+    <Dialog id="confirmDeleteDialog" title="Confirm Deletion">
+        <content>
+        <VBox class="contentClass">
+            <Text text="Are you sure you want to delete this entry?" />
+        </VBox>
+        </content>
+        <beginButton>
+            <Button text="Cancel" press="onCloseConfirmDeleteDialog"/>
+        </beginButton>
+        <endButton>
+            <Button text="Delete" type="Emphasized" press="onConfirmDelete"/>
+        </endButton>
+    </Dialog>
 </mvc:View>
