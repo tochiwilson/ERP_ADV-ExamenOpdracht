@@ -62,7 +62,7 @@
                                     <VBox id="detailContent" visible="false">
                                         <VBox class="MovementsTitleBox">
                                             <HBox class="MovementsTitleAndButton"> 
-                                                <Text id="detailId" text="ID: {Id}" class="MovementsTitle"/>
+                                                <Text id="detailId" text="Movement ID: {Id}" class="MovementsTitle"/>
                                                 <Button
                                                     id="editMovementButton"
                                                     icon="sap-icon://edit"
@@ -84,7 +84,7 @@
                                             <Text id="detailFinished" text="{= ${Finished} ? 'Finished' : 'Not Finished'}"/>
                                         </VBox>
                                         <VBox class="MovementsBodyBox">
-                                            <Text id="detailType" text="Type: {Type}"/>
+                                            <Text id="detailType" text="Movement Type: {Type}"/>
                                             <Text id="detailMovDate" text="Date: {path: 'MovDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'dd-MM-yyyy'}}" />
                                             <Text id="detailPartner" text="Partner: {Partner}"/>
                                             <Text id="detailChanges" text="Last changed by {ChgUser} on {path: 'ChgDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'dd-MM-yyyy'}}" class="MovementsDetailChanges"/>
