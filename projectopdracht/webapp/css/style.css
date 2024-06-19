@@ -1,4 +1,4 @@
-.TitleBox {
+.MovementsTitleBox {
     margin: 2rem;
     margin-top: 1rem;
     background-color: white;
@@ -7,24 +7,24 @@
     border-top-right-radius: 10px;
 }
 
-.title {
+.MovementsTitle {
     font-weight: bold;
     font-size: 2rem;
 }
 
-.BodyBox {
+.MovementsBodyBox {
     margin: 2rem;
     margin-top: -1rem;
     background-color: white;
     padding: 1rem;
 }
 
-.detailChanges {
+.MovementsDetailChanges {
     margin-top: 0.5rem;
     color: darkgray;
 }
 
-.ItemsBox {
+.MovementsItemsBox {
     margin: 2rem;
     margin-top: -1rem;
     background-color: white;
@@ -33,60 +33,60 @@
     border-bottom-right-radius: 10px;
 }
 
-.itemsTitle {
+.MovementsItemsTitle {
     font-weight: bold;
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
 }
 
-.typeFilter {
+.MovementsTypeFilter {
     margin: 1rem;
     margin-bottom: 0rem;
 }
 
-.dateFilter {
+.MovementsDateFilter {
     margin: 1rem;
 }
 
-.movementList {
+.MovementsList {
     border-top: 1px solid lightgray;
 }
 
-.noDataText {
+.MovementsNoDataText {
     margin: 2rem;
 }
 
-.searchButton {
+.MovementsSearchButton {
     margin-left: 15rem;
     margin-bottom: 1rem;
     margin-top: -1rem;
 }
 
-.floatingButton {
+.MovementsFloatingButton {
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 1000;
 }
 
-.contentClass {
+.MovementsContentClass {
     margin: 2rem;
 }
 
-.createMovementDialog {
+.MovementsCreateDialog {
     width: 50vw;
 }
 
-.TitleAndButton {
+.MovementsTitleAndButton {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.TitleAndButton .title {
+.MovementsTitleAndButton .MovementsTitle {
     flex-grow: 1;
 }
 
-.deletePopUp {
+.MovementsDeletePopUp {
     margin: 2rem;
 }
