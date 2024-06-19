@@ -1,3 +1,29 @@
+.MovementsHeader {
+    background-color: #f4f4f4;
+    padding: 1rem;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.MovementsHeaderBox {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.MovementsFilterSelect,
+.MovementsFilterDate,
+.MovementsFilterInput {
+    margin-right: 1rem;
+}
+
+.MovementsSearchButton {
+    margin-right: 1rem;
+}
+
+.MovementsAddButton {
+    margin-left: auto;
+}
+
+/* Existing styles */
 .MovementsTitleBox {
     margin: 2rem;
     margin-top: 1rem;
@@ -54,12 +80,6 @@
 
 .MovementsNoDataText {
     margin: 2rem;
-}
-
-.MovementsSearchButton {
-    margin-left: 15rem;
-    margin-bottom: 1rem;
-    margin-top: -1rem;
 }
 
 .MovementsFloatingButton {

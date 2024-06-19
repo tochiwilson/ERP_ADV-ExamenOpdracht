@@ -96,6 +96,9 @@ sap.ui.define([
 
             var sStartDate = oStartDatePicker.getValue();
             var sEndDate = oEndDatePicker.getValue();
+            
+            var sPartner = this.byId("partnerFilter").getValue();
+            var sLocation = this.byId("locationFilter").getSelectedKey();
 
             var aFilters = [];
 
@@ -113,11 +116,30 @@ sap.ui.define([
             if (sEndDate) {
                 aFilters.push(new Filter("MovDate", FilterOperator.LE, sEndDate));
             }
+            
+            // Add filter for partner if selected
+            if (sPartner) {
+                aFilters.push(new Filter("Partner", FilterOperator.Contains, sPartner));
+            }
+            
+            // Add filter for location if selected
+            if (sLocation && sLocation !== "all") {
+                aFilters.push(new Filter("Location", FilterOperator.EQ, sLocation));
+            }
 
             // Apply the filters to the list binding
             var oList = this.byId("entryList");
             var oBinding = oList.getBinding("items");
             oBinding.filter(aFilters);
+        },
+
+        onSortChange: function () {
+            // Apply sorting based on user input
+            var sSelectedKey = this.byId("sortFilter").getSelectedKey();
+            var oSorter = new sap.ui.model.Sorter(sSelectedKey, false); // false for ascending order
+            var oList = this.byId("entryList");
+            var oBinding = oList.getBinding("items");
+            oBinding.sort(oSorter);
         },
 
         onOpenCreateDialog: function () {

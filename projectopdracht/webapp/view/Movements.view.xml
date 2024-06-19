@@ -2,88 +2,108 @@
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m"
     xmlns:core="sap.ui.core">
-    <SplitApp class="MovementsSplitApp" id="SplitApp">
-        <masterPages>
-            <Page id="masterPage" title="Movements">
-                <content>
-                    <VBox>
-                        <VBox class="MovementsTypeFilter"> 
-                            <Select id="typeSelect">
-                                <items>
-                                    <core:Item key="all" text="All Types" />
-                                    <core:Item key="IN" text="IN" />
-                                    <core:Item key="OUT" text="OUT" />
-                                    <core:Item key="I/O" text="I/O" />
-                                </items>
-                            </Select>                   
-                        </VBox>
-                        <VBox class="MovementsDateFilter">
-                            <Label text="Start Date"/>
-                            <DatePicker id="startDatePicker" width="50%" valueFormat="yyyy-MM-dd" displayFormat="long"/>
-                            
-                            <Label text="End Date" class="sapUiSmallMarginTop"/>
-                            <DatePicker id="endDatePicker" width="50%" valueFormat="yyyy-MM-dd" displayFormat="long"/>
-                        </VBox>
+    <App class="MovementsApp" id="MovementsApp">
+        <Page id="mainPage" title="Movements Application">
+            <content>
+                <!-- Header section -->
+                <VBox class="MovementsHeader">
+                    <HBox class="MovementsHeaderBox">
+                        <Select id="typeSelect" class="MovementsFilterSelect">
+                            <items>
+                                <core:Item key="all" text="All Types" />
+                                <core:Item key="IN" text="IN" />
+                                <core:Item key="OUT" text="OUT" />
+                                <core:Item key="I/O" text="I/O" />
+                            </items>
+                        </Select>
+                        <DatePicker id="startDatePicker" placeholder="Start Date" class="MovementsFilterDate"/>
+                        <DatePicker id="endDatePicker" placeholder="End Date" class="MovementsFilterDate"/>
+                        <Input id="partnerFilter" placeholder="Partner" class="MovementsFilterInput"/>
+                        <Select id="locationFilter" class="MovementsFilterSelect">
+                            <items>
+                                <core:Item key="all" text="All Locations" />
+                                <core:Item key="NOORD" text="NOORD" />
+                                <core:Item key="LICHT" text="LICHT" />
+                                <core:Item key="ELLER" text="ELLER" />
+                                <core:Item key="VIADU" text="VIADU" />
+                            </items>
+                        </Select>
+                        <Select id="sortFilter" class="MovementsFilterSelect">
+                            <items>
+                                <core:Item key="none" text="None" />
+                                <core:Item key="date" text="Date" />
+                                <core:Item key="type" text="Type" />
+                                <core:Item key="location" text="Location" />
+                            </items>
+                        </Select>
                         <Button text="Search" type="Emphasized" press="applyFilters" class="MovementsSearchButton"/>
                         <Button icon="sap-icon://add" press="onOpenCreateDialog" class="MovementsAddButton" text="Add Movement"/>
-
-                        <List id="entryList" mode="SingleSelectMaster" items="{/MovementSet}" selectionChange="onSelectionChange" class="MovementsList">
-                            <StandardListItem
-                                title="{Id}"
-                                description="{Type}"
-                                info="{Location}" />
-                        </List>
-                    </VBox>
-                </content>
-            </Page>
-        </masterPages>
-        <detailPages>
-            <Page id="detailPage" title="Movement Details">
-                <content>
-                    <VBox>
-                        <Text id="noDataText" text="No Movement Selected" visible="true" class="MovementsNoDataText"/>                    
-                        <VBox id="detailContent" visible="false">
-                            <VBox class="MovementsTitleBox">
-                                <HBox class="MovementsTitleAndButton"> 
-                                    <Text id="detailId" text="ID: {Id}" class="MovementsTitle"/>
-                                    <Button
-                                        id="editMovementButton"
-                                        icon="sap-icon://edit"
-                                        press="onOpenEditDialog">
-                                        <layoutData>
-                                            <OverflowToolbarLayoutData priority="NeverOverflow"/>
-                                        </layoutData>
-                                    </Button>
-                                    <Button
-                                        id="deleteMovementButton"
-                                        icon="sap-icon://delete"
-                                        press="onDeleteEntry">
-                                        <layoutData>
-                                            <OverflowToolbarLayoutData priority="NeverOverflow"/>
-                                        </layoutData>
-                                    </Button>
-                                </HBox>
-                                <Text id="detailLocation" text="Location: {Location}"/>
-                                <Text id="detailFinished" text="{= ${Finished} ? 'Finished' : 'Not Finished'}"/>
-                            </VBox>
-                            <VBox class="MovementsBodyBox">
-                                <Text id="detailType" text="Type: {Type}"/>
-                                <Text id="detailMovDate" text="Date: {path: 'MovDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'dd-MM-yyyy'}}" />
-                                <Text id="detailPartner" text="Partner: {Partner}"/>
-                                <Text id="detailChanges" text="Last changed by {ChgUser} on {path: 'ChgDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'dd-MM-yyyy'}}" class="MovementsDetailChanges"/>
-                            </VBox>      
-                            <VBox class="MovementsItemsBox">
-                                <Text class="MovementsItemsTitle" text="Items: "/>
-                                <List id="itemsListDetail" items="{itemsModel>/items}">
-                                    <StandardListItem title="{itemsModel>Matnr}" info="{itemsModel>Umziz} {itemsModel>Meins}"/>
+                    </HBox>
+                </VBox>
+                <!-- Split App section -->
+                <SplitApp class="MovementsSplitApp" id="SplitApp">
+                    <masterPages>
+                        <Page id="masterPage" showHeader="false">
+                            <content>
+                                <List id="entryList" mode="SingleSelectMaster" items="{/MovementSet}" selectionChange="onSelectionChange" class="MovementsList">
+                                    <StandardListItem
+                                        title="{Id}"
+                                        description="{Type}"
+                                        info="{Location}" />
                                 </List>
-                            </VBox>                   
-                        </VBox>
-                    </VBox>
-                </content>
-            </Page>
-        </detailPages>
-    </SplitApp>
+                            </content>
+                        </Page>
+                    </masterPages>
+                    <detailPages>
+                        <Page id="detailPage" title="Movement Details" showHeader="false">
+                            <content>
+                                <VBox class="MovementsDetailBox">
+                                    <Text id="noDataText" text="No Movement Selected" visible="true" class="MovementsNoDataText"/>                    
+                                    <VBox id="detailContent" visible="false">
+                                        <VBox class="MovementsTitleBox">
+                                            <HBox class="MovementsTitleAndButton"> 
+                                                <Text id="detailId" text="ID: {Id}" class="MovementsTitle"/>
+                                                <Button
+                                                    id="editMovementButton"
+                                                    icon="sap-icon://edit"
+                                                    press="onOpenEditDialog">
+                                                    <layoutData>
+                                                        <OverflowToolbarLayoutData priority="NeverOverflow"/>
+                                                    </layoutData>
+                                                </Button>
+                                                <Button
+                                                    id="deleteMovementButton"
+                                                    icon="sap-icon://delete"
+                                                    press="onDeleteEntry">
+                                                    <layoutData>
+                                                        <OverflowToolbarLayoutData priority="NeverOverflow"/>
+                                                    </layoutData>
+                                                </Button>
+                                            </HBox>
+                                            <Text id="detailLocation" text="Location: {Location}"/>
+                                            <Text id="detailFinished" text="{= ${Finished} ? 'Finished' : 'Not Finished'}"/>
+                                        </VBox>
+                                        <VBox class="MovementsBodyBox">
+                                            <Text id="detailType" text="Type: {Type}"/>
+                                            <Text id="detailMovDate" text="Date: {path: 'MovDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'dd-MM-yyyy'}}" />
+                                            <Text id="detailPartner" text="Partner: {Partner}"/>
+                                            <Text id="detailChanges" text="Last changed by {ChgUser} on {path: 'ChgDate', type: 'sap.ui.model.type.Date', formatOptions: {pattern: 'dd-MM-yyyy'}}" class="MovementsDetailChanges"/>
+                                        </VBox>      
+                                        <VBox class="MovementsItemsBox">
+                                            <Text class="MovementsItemsTitle" text="Items: "/>
+                                            <List id="itemsListDetail" items="{itemsModel>/items}">
+                                                <StandardListItem title="{itemsModel>Matnr}" info="{itemsModel>Umziz} {itemsModel>Meins}"/>
+                                            </List>
+                                        </VBox>                   
+                                    </VBox>
+                                </VBox>
+                            </content>
+                        </Page>
+                    </detailPages>
+                </SplitApp>
+            </content>
+        </Page>
+    </App>
     
     <Dialog id="createMovementDialog" title="Create New Movement" class="MovementsCreateDialog">
         <content>
